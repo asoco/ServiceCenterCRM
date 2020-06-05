@@ -54,7 +54,6 @@
                                     <input type="number" name="Quantity_part" min="1" max="100" class="form-control" id="inputAddress" maxlength="50" value="1" style="max-width: 100px;">
                                 </div>
                                 <div class="input-group  mb-3 orderline">
-                                    <!-- <input type="datetime-local" class="form-control" style="max-width: 220px;"> -->
                                     <input type="text" name="Price_part" class="form-control" placeholder="Цена">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="basic-addon2">руб</span>
@@ -72,17 +71,6 @@
     </div>
     </main>
 </div>
-
-
-<script>
-  //   $("#inlineFormCustomSelect").change(function () {
-  //       $('#inlineFormCustomSelect').val()
-  //   $.post( "database.php", { action:"getprovider", name: $('#inlineFormCustomSelect').val()})
-  //     .done(function( data ) {
-  //       alert( "Data Loaded: " + data );
-  //     });
-  // });
-</script>
 
 <script>
 $(document).ready(function () {

@@ -41,7 +41,7 @@
 </div>
 <hr>
 <div class="lead ml-3" style="font-size:16px;">
-    <p>Разработка: Потемка Даниил, 38гр ФКТиПМ КубГУ. <a href="javascript:void(0)" data-toggle="modal" data-target="#ModalAbout">О приложении</a></p>
+    <p>Разработка: Потемка Даниил, Серебрякова Екатерина 38гр ФКТиПМ КубГУ. <a href="javascript:void(0)" data-toggle="modal" data-target="#ModalAbout">О приложении</a></p>
 </div>
 </div>
 </main>
@@ -56,7 +56,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Веб-приложение разработал студент 38 группы <strong>Потемка Даниил</strong> в ходе лабораторной работы #6 для автоматизации ремонтной мастерской электронного оборудования
+                Веб-приложение разработали студенты 38 группы <strong>Потемка Даниил</strong> и <strong>Серебрякова Екатерина</strong> для автоматизации ремонтной мастерской электронного оборудования
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">Закрыть</button>

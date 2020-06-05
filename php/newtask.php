@@ -78,9 +78,8 @@ var productIds = new Object();
                          $provname = Null;
                           $result = Null;
                           $result = $mysql->query("SELECT * FROM `employees` WHERE `ID_job`='3'");
-                        // } 
                         ?>
-                         <h5 class="mt-4">Закрепите рабочего</h5>
+                        <h5 class="mt-4">Закрепите рабочего</h5>
                         <div class="input-group mb-3">
                             <select class="custom-select mr-sm-2" name="mstr" id="inlineFormCustomSelect">
                                 <option value=" " selected>Нет</option>
@@ -92,20 +91,22 @@ var productIds = new Object();
                                     }
                                 ?>
                             </select>
-                        </div>
+                        </div> 
                         <h5 class="mt-5">Информация об оборудовании</h5>
 
                         <div class="input-group mb-3">
-                           <!--  <div class="input-group-prepend">
+                            <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-laptop"></i></span>
-                            </div> -->
+                            </div>
                                 <input type="text" name="hw_name" class="typeahead form-control " maxlength="300" placeholder="Наименование оборудования" aria-label="Name" aria-describedby="basic-addon1">
                         </div>
 
                         <div class="form-group mb-3">
-                            <input type="text" name="sn_hw" class="form-control" id="inputAddress" maxlength="50" placeholder="Серийный номер оборудования">
+                            <input type="text" name="sn_hw" class="form-control" maxlength="50" placeholder="Серийный номер оборудования">
                         </div>
-
+                         <div class="form-group mb-3">
+                            <input type="text" name="problems" class="form-control" maxlength="300" placeholder="Заявленные неисправности">
+                        </div>
                         <div class="custom-control custom-switch mb-3">
                             <input type="checkbox" name="warranty" class="custom-control-input" id="customSwitch1">
                             <label class="custom-control-label" for="customSwitch1" style="user-select: none;">

@@ -24,9 +24,8 @@
   data-show-refresh="true"
   data-search="true"
    data-detail-view="true"
-     data-row-attributes="rowAttributes"
-   data-detail-formatter="detailFormatter"
   data-show-columns-toggle-all="true"
+  data-detail-formatter="idorderfrm"
   >
   <thead>
     <tr>
@@ -44,6 +43,40 @@
     </tr>
   </thead>
 </table> 
+
+<div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Вы закрепили заказ</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Хорошо</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ошибка</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Отмена</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php   
   
   $result = $mysql->query("SELECT * FROM `catalog_parts` JOIN `providers` USING (`ID_provider`) WHERE `Status_delivery`='Ожидает доставки'");
@@ -60,12 +93,13 @@
       'data-trigger': 'hover',
       'data-content': [
         // 'Индекс: ' + index,
-        'Дата завершения: ' + row.order_end_datetime,
-        'Гарантия: ' + row.warranty_order
-      ].join('')
+        'Представитель: ' + row.Name_Rprsnt+'\t\n',
+        'Телефон: ' + row.Phone_provider+''
+        
+      ].join('\t\n ')
     }
   }
-
+// {"ID_provider":"3","ID_cat_part":"30","Name_part":"Экран","Price_part":"12500","Color_part":"Черный","Vendor_part":"Apple","Condition_part":"Новое","Quantity_part":"1","Status_delivery":"Ожидает доставки","Name_provider":"Алекса","Adress_provider":"г.Ростов-на-Дону, ул. Светлая, д.5","Phone_provider":"88002225566","Name_Rprsnt":"Андрей"}
   $(function() {
     $('#table').on('post-body.bs.table', function (e) {
       $('[data-toggle="popover"]').popover()
@@ -81,22 +115,11 @@
     $table.bootstrapTable({
       data: data,
       escape: true,
-      height: 350,
+      height: 700,
       locale: 'ru-RU'
     })
   })
 </script>
-<script>
-  function detailFormatter(index, row) {
-    var html = []
-    $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
-
-    return html.join('')
-  }
-
-</script>
 
 <script>
   function detailFormatter(index, row) {
@@ -108,34 +131,69 @@
     return html.join('')
   }
   
-   function detailFormatter(index, row) {
-    var html = []
-    $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
-  
-    return html.join('')
-  }
   
   // управление заказами
   window.operateEvents = {
-    'click .like': function (e, value, row) {
-      alert('You click like action, row: ' + JSON.stringify(row))
-    },
-    'click .remove': function (e, value, row) {
-      alert('You click remove action, row: ' + JSON.stringify(row))
+    'click .delivered': function (e, value, row) {
+      $.post( "database.php", { action:"delivered", ID_cat_part:JSON.parse(row.ID_cat_part) })
+        .done(function( data ) {
+            if (data=' '){
+
+            $('#AddModal').modal('show');
+            $('.modal-body').html('<p class="col-form">Заказ <strong class="ID_cat_part"></strong> доставлен</p>');
+            $('.ID_cat_part').html(row.ID_cat_part);    
+              $table.bootstrapTable('refreshOptions', {}); 
+          }else{
+              $('#ErrorModal').modal('show');
+               $('.modal-body').html('<p class="col-form nomaster">Заказ <strong class="ID_cat_part"></strong> не может быть принят</p>');
+              $('.ID_cat_part').html(row.ID_cat_part); 
+              $table.bootstrapTable('refreshOptions', {}); 
+          }
+        });
+              
     }
   }
   
   function operateFormatter(value, row, index) {
     return [
-      '<div class="left">',
-      // '<a href="https://github.com/wenzhixin/' + value + '" target="_blank">' + value + '</a>',
-      '</div>',
       '<div class="text-center" style="font-size:22px;">',
-      '<a class="like" href="javascript:void(0)" title="Like">',
+      '<a class="delivered" href="javascript:void(0)" title="Like">',
       '<i class="fas fa-check-circle"></i>',
       '</a>  ',
       '</div>'
     ].join('')
-  }</script>
+  }
+
+
+  function idorderfrm(index, row) {
+    return '<p> <b>Элемент</b>: '
+    + index 
+    + '</p><p><b>Код поставщика</b>: ' 
+    + row.ID_provider 
+    + '</p><p> <b>Поставщик</b>: ' 
+    + row.Name_provider
+    + '</p><p> <b>Адрес поставщика</b>: ' 
+    + row.Adress_provider
+    + '</p><p> <b>Телефон поставщика</b>: ' 
+    + row.Phone_provider
+    + '</p><p> <b>Представитель</b>: ' 
+    + row.Name_Rprsnt
+    + '</p><hr /><p> <b>Код_каталог</b>: ' 
+    + row.ID_cat_part 
+    + '</p><p> <b>Производитель</b>: ' 
+    + row.Vendor_part
+    + '</p><p> <b>Наименование</b>: ' 
+    + row.Name_part 
+    + '</p><p> <b>Стоимость</b>: ' 
+    + row.Price_part
+    + '</p><p> <b>Цвет</b>: ' 
+    + row.Color_part
+    + '</p><p> <b>Состояние</b>: ' 
+    + row.Condition_part
+    + '</p><p>  <b>Количество</b>: ' 
+    + row.Quantity_part
+    + '</p><p> <b>Статус доставки</b>: ' 
+    + row.Status_delivery
+    +'</p>' 
+  }
+</script>
